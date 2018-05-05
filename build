@@ -1,0 +1,5 @@
+#!/bin/sh
+FLAG="-std=c++11 -Wall -Wextra -g"
+
+g++ -shared -o libEg.so `ls E*.cpp` $FLAG -fPIC `pkg-config --cflags --libs glfw3 glew`
+g++ test.cpp -o test $FLAG -Wl,--rpath=. -L. -lEg
