@@ -23,7 +23,7 @@ namespace Eg {
 		eApp->put(new EMouseMoveMsg(x, y));
 	}
 
-	EApp::EApp() : end(false), close([&]() {
+	EApp::EApp(int w, int h) : end(false), close([&]() {
 		end = true;
 	}), quit(s_quit) {
 		if (eApp) {
@@ -32,12 +32,19 @@ namespace Eg {
 			eApp = this;
 			msgQueue = EMsgQueue::create();
 			glfwInit();
-			handle = glfwCreateWindow(100, 100, "", 0, 0);
+			handle = glfwCreateWindow(w, h, "", 0, 0);
 			glfwSetWindowCloseCallback(handle, CloseCallback);
 			glfwSetCursorPosCallback(handle, CursorPosCallback);
 			coreThread = new std::thread([&]() {
 				glfwMakeContextCurrent(handle);
-				eRootWindow = new EWindow(0);
+				glfwSwapInterval(0);
+				glewInit();
+				glEnable(GL_BLEND);
+				glEnable(GL_TEXTURE_2D);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glLoadIdentity();
+				gluOrtho2D(0, w, 0, h);
+				eRootWindow = new EWindow(0, w, h);
 				s_quit.connect(loop.quit);
 				loop.exec();
 				close();
