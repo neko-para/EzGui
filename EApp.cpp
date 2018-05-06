@@ -4,6 +4,8 @@
 #include "EWindow.h"
 #include "EMsg.h"
 
+#include <stdio.h>
+
 namespace Eg {
 
 	EApp* eApp;
@@ -23,7 +25,7 @@ namespace Eg {
 		eApp->put(new EMouseMoveMsg(x, y));
 	}
 
-	EApp::EApp(int w, int h) : end(false), close([&]() {
+	EApp::EApp(std::function<void(void)> startUp, int w, int h) : end(false), close([&]() {
 		end = true;
 	}), quit(s_quit) {
 		if (eApp) {
@@ -35,7 +37,8 @@ namespace Eg {
 			handle = glfwCreateWindow(w, h, "", 0, 0);
 			glfwSetWindowCloseCallback(handle, CloseCallback);
 			glfwSetCursorPosCallback(handle, CursorPosCallback);
-			coreThread = new std::thread([&]() {
+			// TODO: add resize support.
+			coreThread = new std::thread([&](std::function<void(void)> startUp, int w, int h) {
 				glfwMakeContextCurrent(handle);
 				glfwSwapInterval(0);
 				glewInit();
@@ -44,11 +47,15 @@ namespace Eg {
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				glLoadIdentity();
 				gluOrtho2D(0, w, 0, h);
-				eRootWindow = new EWindow(0, w, h);
+				int px, py;
+				glfwGetWindowPos(handle, &px, &py);
+				eRootWindow = new EWindow(0, px, py, w, h);
+				printf("%d %d\n", w, h);
 				s_quit.connect(loop.quit);
+				startUp();
 				loop.exec();
 				close();
-			});
+			}, startUp, w, h);
 		}
 	}
 

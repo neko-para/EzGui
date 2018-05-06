@@ -28,7 +28,7 @@ namespace Eg {
 		Signal<int> s_quit;
 		TransferSlot<int> quit;
 
-		EApp(int w = 640, int h = 480);
+		EApp(std::function<void(void)> startUp, int w = 640, int h = 480);
 		~EApp();
 
 		int exec();

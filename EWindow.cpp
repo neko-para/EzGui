@@ -6,7 +6,7 @@ namespace Eg {
 
 	EWindow* eRootWindow;
 
-	EWindow::EWindow(EWindow* p, int w, int h) : parentWindow(p), windowWidth(w), windowHeight(h) {
+	EWindow::EWindow(EWindow* p, int x, int y, int w, int h) : parentWindow(p), windowPosx(x), windowPosy(y), windowWidth(w), windowHeight(h) {
 		GLint pre;
 		glGenFramebuffers(1, &frameBuffer);
 		// glGenRenderbuffers(1, &renderBuffer);
@@ -46,44 +46,40 @@ namespace Eg {
 	}
 
 	void EWindow::drawTexture() {
-		int pw, ph;
+		int pw, ph, x, y;
 		if (parentWindow) {
 			glBindFramebuffer(GL_FRAMEBUFFER, parentWindow->frameBuffer);
 			pw = parentWindow->width();
 			ph = parentWindow->height();
+			x = windowPosx;
+			y = ph - windowPosy - windowHeight;
 		} else {
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			glfwGetWindowSize(eApp->getGlfwWindow(), &pw, &ph);
+			x = 0;
+			y = ph;
 		}
-		int y = ph - windowPosy - windowHeight;
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glBegin(GL_QUADS);
 		glTexCoord2i(0, 0);
-		glVertex2i(windowPosx, y);
+		glVertex2i(x, y);
 		glTexCoord2i(1, 0);
-		glVertex2i(windowPosx + windowWidth, y);
+		glVertex2i(x + windowWidth, y);
 		glTexCoord2i(1, 1);
-		glVertex2i(windowPosx + windowWidth, y + windowHeight);
+		glVertex2i(x + windowWidth, y + windowHeight);
 		glTexCoord2i(0, 1);
-		glVertex2i(windowPosx, y + windowHeight);
+		glVertex2i(x, y + windowHeight);
 		glEnd();
 	}
 
-	void EWindow::draw() {
-		glClear(GL_COLOR_BUFFER_BIT);
-		static float x;
-		glPushMatrix();
-		glRotated(x, 0, 0, 1);
-		x += 0.01;
-		glBegin(GL_TRIANGLES);
-		glColor3d(1, 0, 0);
-		glVertex2d(-0.86, 0.5);
-		glColor3d(0, 1, 0);
-		glVertex2d(0, -1);
-		glColor3d(0, 0, 1);
-		glVertex2d(0.86, 0.5);
-		glEnd();
-		glPopMatrix();
+	void EWindow::draw() {}
+
+	void EWindow::move(int x, int y) {
+		windowPosx = x;
+		windowPosy = y;
+		if (!parentWindow) {
+			glfwSetWindowPos(eApp->getGlfwWindow(), windowPosx, windowPosy);
+		}
 	}
 
 	void EWindow::resize(int w, int h) {
