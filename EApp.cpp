@@ -42,11 +42,14 @@ namespace Eg {
 				glfwMakeContextCurrent(handle);
 				glfwSwapInterval(0);
 				glewInit();
-				glEnable(GL_BLEND);
-				glEnable(GL_TEXTURE_2D);
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glEnable(GL_SCISSOR_TEST);
+
+				glViewport(0, 0, w, h);
 				glLoadIdentity();
 				gluOrtho2D(0, w, 0, h);
+				glTranslated(0, h, 0);
+				glScaled(1, -1, 1);
+
 				int px, py;
 				glfwGetWindowPos(handle, &px, &py);
 				eRootWindow = new EWindow(0, px, py, w, h);

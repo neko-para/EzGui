@@ -6,18 +6,19 @@ class MyMain : public Eg::EWindow {
 public:
 	using Eg::EWindow::EWindow;
 	virtual void draw() {
-		glClear(GL_COLOR_BUFFER_BIT);
+		// glClear(GL_COLOR_BUFFER_BIT);
 		static float x;
 		glPushMatrix();
 		glRotated(x, 0, 0, 1);
-		x += 0.01;
+		glScaled(5, 5, 1);
+		x += 0.1;
 		glBegin(GL_TRIANGLES);
 		glColor3d(1, 0, 0);
-		glVertex2d(-0.86, 0.5);
+		glVertex2d(-8.6, 5);
 		glColor3d(0, 1, 0);
-		glVertex2d(0, -1);
+		glVertex2d(0, -10);
 		glColor3d(0, 0, 1);
-		glVertex2d(0.86, 0.5);
+		glVertex2d(8.6, 5);
 		glEnd();
 		glPopMatrix();
 	}

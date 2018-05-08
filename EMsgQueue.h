@@ -13,7 +13,6 @@ namespace Eg {
 
 	typedef std::shared_ptr<EMsgQueue> EMsgQueuePtr;
 
-	// Only new it
 	class EMsgQueue {
 		std::mutex lock;
 		std::list<EMsgBase*> msg;

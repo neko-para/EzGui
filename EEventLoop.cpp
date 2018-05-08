@@ -23,7 +23,8 @@ namespace Eg {
 				eRootWindow->post(p);
 				delete p;
 			}
-			eRootWindow->execDraw();
+			glClear(GL_COLOR_BUFFER_BIT);
+			eRootWindow->execDraw(0, eRootWindow->windowHeight);
 			glfwSwapBuffers(eApp->getGlfwWindow());
 			printf("%.4lf\r", (double)cnt++ / (clock() - base) * CLOCKS_PER_SEC);
 			if (cnt > 10000) {

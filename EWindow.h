@@ -14,18 +14,14 @@ namespace Eg {
 		friend class EEventLoop;
 		std::list<EWindow*> subWindows;
 		EWindow* parentWindow;
-		unsigned frameBuffer;
-		// unsigned renderBuffer;
-		unsigned texture;
 		int windowPosx, windowPosy;
 		int windowWidth, windowHeight;
-		void execDraw();
+		void execDraw(int px, int py);
 	public:
 		EWindow(EWindow* p, int x, int y, int w, int h);
 		virtual ~EWindow() {}
 
 		virtual void post(EMsgBase* msg) final;
-		virtual void drawTexture() final;
 		virtual void draw();
 		void move(int x, int y);
 		void resize(int w, int h);
