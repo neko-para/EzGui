@@ -23,7 +23,7 @@ namespace Eg {
 	}
 
 	void EWindow::execDraw(int px, int py) {
-		glPushAttrib(GL_ALL_ATTRIB_BITS);
+		// glPushAttrib(GL_ALL_ATTRIB_BITS);
 		glPushMatrix();
 		if (parentWindow) {
 			glTranslated(windowPosx, windowPosy, 0);
@@ -31,7 +31,7 @@ namespace Eg {
 		glScissor(px, py - windowHeight, windowWidth, windowHeight);
 		draw();
 		glPopMatrix();
-		glPopAttrib();
+		// glPopAttrib();
 		for (auto it = subWindows.rbegin(); it != subWindows.rend(); ++it) {
 			(*it)->execDraw(px + (*it)->windowPosx, py - (*it)->windowPosy);
 		}

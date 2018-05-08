@@ -4,8 +4,6 @@
 #include "EWindow.h"
 #include "EMsg.h"
 
-#include <stdio.h>
-
 namespace Eg {
 
 	EApp* eApp;
@@ -43,6 +41,8 @@ namespace Eg {
 				glfwSwapInterval(0);
 				glewInit();
 				glEnable(GL_SCISSOR_TEST);
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 				glViewport(0, 0, w, h);
 				glLoadIdentity();
@@ -53,7 +53,6 @@ namespace Eg {
 				int px, py;
 				glfwGetWindowPos(handle, &px, &py);
 				eRootWindow = new EWindow(0, px, py, w, h);
-				printf("%d %d\n", w, h);
 				s_quit.connect(loop.quit);
 				startUp();
 				loop.exec();
