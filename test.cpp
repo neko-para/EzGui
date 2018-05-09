@@ -1,10 +1,10 @@
 #include "EApp.h"
-#include "EWindow.h"
+#include "EUserWindow.h"
 #include <GL/glew.h>
 
-class MyMain : public Eg::EWindow {
+class MyMain : public Eg::EUserWindow {
 public:
-	using Eg::EWindow::EWindow;
+	using Eg::EUserWindow::EUserWindow;
 	virtual void draw() {
 		// glClear(GL_COLOR_BUFFER_BIT);
 		static float x;

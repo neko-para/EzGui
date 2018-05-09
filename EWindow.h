@@ -12,19 +12,32 @@ namespace Eg {
 
 	class EWindow {
 		friend class EEventLoop;
+		friend class EMainWindow;
 		std::list<EWindow*> subWindows;
+		void execDraw(int px, int py);
+		EWindow(int x, int y, int w, int h);
+	protected:
 		EWindow* parentWindow;
 		int windowPosx, windowPosy;
 		int windowWidth, windowHeight;
-		void execDraw(int px, int py);
+		virtual void preDraw(int px, int py);
+		virtual void pstDraw(int px, int py);
 	public:
 		EWindow(EWindow* p, int x, int y, int w, int h);
 		virtual ~EWindow() {}
 
-		virtual void post(EMsgBase* msg) final;
+		void post(EMsgBase* msg);
 		virtual void draw();
-		void move(int x, int y);
-		void resize(int w, int h);
+		virtual void move(int x, int y);
+		virtual void resize(int w, int h);
+
+		int posx() const {
+			return windowPosx;
+		}
+
+		int posy() const {
+			return windowPosy;
+		}
 
 		int width() const {
 			return windowWidth;

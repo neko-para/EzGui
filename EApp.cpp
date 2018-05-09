@@ -6,6 +6,24 @@
 
 namespace Eg {
 
+	class EMainWindow : public EWindow {
+	protected:
+		virtual void preDraw(int, int) override {}
+		virtual void pstDraw(int, int) override {}
+	public:
+		EMainWindow(int x, int y, int w, int h) : EWindow(x, y, w, h)  {}
+		virtual void move(int x, int y) override {
+			windowPosx = x;
+			windowPosy = y;
+			glfwSetWindowPos(eApp->getGlfwWindow(), windowPosx, windowPosy);
+		}
+		virtual void resize(int w, int h) override {
+			windowWidth = w;
+			windowHeight = h;
+			glfwSetWindowSize(eApp->getGlfwWindow(), windowWidth, windowHeight);
+		}
+	};
+
 	EApp* eApp;
 
 	static void CloseCallback(GLFWwindow*) {
@@ -52,7 +70,7 @@ namespace Eg {
 
 				int px, py;
 				glfwGetWindowPos(handle, &px, &py);
-				eRootWindow = new EWindow(0, px, py, w, h);
+				eRootWindow = new EMainWindow(px, py, w, h);
 				s_quit.connect(loop.quit);
 				startUp();
 				loop.exec();

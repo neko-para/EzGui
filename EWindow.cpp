@@ -6,10 +6,11 @@ namespace Eg {
 
 	EWindow* eRootWindow;
 
-	EWindow::EWindow(EWindow* p, int x, int y, int w, int h) : parentWindow(p), windowPosx(x), windowPosy(y), windowWidth(w), windowHeight(h) {
-		if (p) {
-			p->subWindows.push_back(this);
-		}
+	EWindow::EWindow(int x, int y, int w, int h) : windowPosx(x), windowPosy(y), windowWidth(w), windowHeight(h) {}
+
+	EWindow::EWindow(EWindow* p, int x, int y, int w, int h) : EWindow(x, y, w, h) {
+		parentWindow = p;
+		p->subWindows.push_back(this);
 	}
 
 	void EWindow::post(EMsgBase* msg) {
@@ -22,16 +23,19 @@ namespace Eg {
 		}
 	}
 
-	void EWindow::execDraw(int px, int py) {
-		// glPushAttrib(GL_ALL_ATTRIB_BITS);
+	void EWindow::preDraw(int, int) {
 		glPushMatrix();
-		if (parentWindow) {
-			glTranslated(windowPosx, windowPosy, 0);
-		}
-		glScissor(px, py - windowHeight, windowWidth, windowHeight);
-		draw();
+		glTranslated(windowPosx, windowPosy, 0);
+	}
+
+	void EWindow::pstDraw(int, int) {
 		glPopMatrix();
-		// glPopAttrib();
+	}
+
+	void EWindow::execDraw(int px, int py) {
+		preDraw(px, py);
+		draw();
+		pstDraw(px, py);
 		for (auto it = subWindows.rbegin(); it != subWindows.rend(); ++it) {
 			(*it)->execDraw(px + (*it)->windowPosx, py - (*it)->windowPosy);
 		}
@@ -42,17 +46,11 @@ namespace Eg {
 	void EWindow::move(int x, int y) {
 		windowPosx = x;
 		windowPosy = y;
-		if (!parentWindow) {
-			glfwSetWindowPos(eApp->getGlfwWindow(), windowPosx, windowPosy);
-		}
 	}
 
 	void EWindow::resize(int w, int h) {
 		windowWidth = w;
 		windowHeight = h;
-		if (!parentWindow) {
-			glfwSetWindowSize(eApp->getGlfwWindow(), windowWidth, windowHeight);
-		}
 	}
 
 }
