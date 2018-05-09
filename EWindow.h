@@ -5,6 +5,7 @@
 
 #include "EEventLoop.h"
 #include "EMsg.h"
+#include "ETypes.h"
 
 namespace Eg {
 
@@ -31,12 +32,13 @@ namespace Eg {
 		virtual void move(int x, int y);
 		virtual void resize(int w, int h);
 
-		int posx() const {
-			return windowPosx;
+
+		EPointi pos() const {
+			return EPointi(windowPosx, windowPosy);
 		}
 
-		int posy() const {
-			return windowPosy;
+		EPointi size() const {
+			return EPointi(windowWidth, windowHeight);
 		}
 
 		int width() const {
