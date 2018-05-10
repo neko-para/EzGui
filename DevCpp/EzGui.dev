@@ -1,7 +1,7 @@
 [Project]
 FileName=EzGui.dev
 Name=EzGui
-Type=1
+Type=3
 Ver=2
 ObjFiles=
 Includes=
@@ -20,16 +20,16 @@ LogOutput=
 LogOutputEnabled=0
 OverrideOutput=0
 OverrideOutputName=EzGui.exe
-HostApplication=
+HostApplication=C:\msys\home\lhy\EzGui\DevCpp\test.exe
 UseCustomMakefile=1
-CustomMakefile=..\Makefile
+CustomMakefile=Makefile
 CommandLine=
 Folders=
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0000000000000000000000000
-UnitCount=16
+CompilerSettings=0000000000000000001000000
+UnitCount=18
 
 [VersionInfo]
 Major=1
@@ -202,6 +202,26 @@ BuildCmd=
 
 [Unit15]
 FileName=..\test.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit17]
+FileName=..\EPushButton.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit18]
+FileName=..\EPushButton.cpp
 CompileCpp=1
 Folder=
 Compile=1
