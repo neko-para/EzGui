@@ -34,10 +34,34 @@ namespace Eg {
 	typedef ERectT<int> ERecti;
 	typedef ERectT<double> ERectf;
 
+	enum EGlobalColor {
+		WHITE,
+		BLACK,
+		RED,
+		DARKRED,
+		GREEN,
+		DARKGREEN,
+		BLUE,
+		DARKBLUE,
+		CYAN,
+		DARKCYAN,
+		MAGENTA,
+		DARKMAGENTA,
+		YELLOW,
+		DARKYELLOW,
+		GRAY,
+		DARKGRAY,
+		LIGHTGRAY,
+		TRANSPARENT,
+		NUMBER_OF_GLOBAL_COLORS
+	};
+
 	struct EColor {
 		double red, green, blue, alpha;
 		EColor(double r, double g, double b, double a = 1.0) : red(r), green(g), blue(b), alpha(a) {}
+		EColor(int r, int g, int b, int a = 255) : EColor(r / 255.0, g / 255.0, b / 255.0, a / 255.0) {}
 		EColor() : EColor(0, 0, 0) {}
+		EColor(EGlobalColor g);
 	};
 
 }
