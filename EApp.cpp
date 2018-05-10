@@ -11,16 +11,23 @@ namespace Eg {
 		virtual void preDraw(int, int) override {}
 		virtual void pstDraw(int, int) override {}
 	public:
-		EMainWindow(int x, int y, int w, int h) : EWindow(x, y, w, h)  {}
-		virtual void move(int x, int y) override {
+		EMainWindow(int x, int y, int w, int h) : EWindow() {
+			windowPosx = x;
+			windowPosy = y;
+			windowWidth = w;
+			windowHeight = h;
+		}
+		virtual EWindow* move(int x, int y) override {
 			windowPosx = x;
 			windowPosy = y;
 			glfwSetWindowPos(eApp->getGlfwWindow(), windowPosx, windowPosy);
+			return this;
 		}
-		virtual void resize(int w, int h) override {
+		virtual EWindow* resize(int w, int h) override {
 			windowWidth = w;
 			windowHeight = h;
 			glfwSetWindowSize(eApp->getGlfwWindow(), windowWidth, windowHeight);
+			return this;
 		}
 	};
 
@@ -35,6 +42,10 @@ namespace Eg {
 		});
 		eApp->put(p);
 		glfwSetWindowShouldClose(eApp->getGlfwWindow(), 0);
+	}
+
+	static void ResizeCallback(GLFWwindow*, int w, int h) {
+		eApp->put(new EResizeMsg(w, h));
 	}
 
 	static void CursorPosCallback(GLFWwindow*, double x, double y) {
@@ -52,8 +63,8 @@ namespace Eg {
 			glfwInit();
 			handle = glfwCreateWindow(w, h, "", 0, 0);
 			glfwSetWindowCloseCallback(handle, CloseCallback);
+			glfwSetWindowSizeCallback(handle, ResizeCallback);
 			glfwSetCursorPosCallback(handle, CursorPosCallback);
-			// TODO: add resize support.
 			coreThread = new std::thread([&](std::function<void(void)> startUp, int w, int h) {
 				glfwMakeContextCurrent(handle);
 				glfwSwapInterval(0);

@@ -1,14 +1,15 @@
 #include "global.h"
 #include "EWindow.h"
 #include "EApp.h"
+#include <stdio.h>
 
 namespace Eg {
 
 	EWindow* eRootWindow;
 
-	EWindow::EWindow(int x, int y, int w, int h) : windowPosx(x), windowPosy(y), windowWidth(w), windowHeight(h) {}
+	EWindow::EWindow() : windowPosx(0), windowPosy(0), windowWidth(1), windowHeight(1) {}
 
-	EWindow::EWindow(EWindow* p, int x, int y, int w, int h) : EWindow(x, y, w, h) {
+	EWindow::EWindow(EWindow* p) : EWindow() {
 		parentWindow = p;
 		p->subWindows.push_back(this);
 	}
@@ -18,10 +19,38 @@ namespace Eg {
 		case EMSG_CLOSE:
 			msg->accept();
 			break;
+		case EMSG_MOUSE:
+			hitTest(dynamic_cast<EMouseMsg*>(msg));
+			break;
 		default:
 			;
 		}
 	}
+	
+	bool EWindow::checkSubWindowsHit(EMouseMsg* m) {
+		for (auto p : subWindows) {
+			m->attach(p);
+			if (p->hitTest(m)) {
+				return true;
+			}
+			m->detach(p);
+		}
+		return false;
+	}
+
+	bool EWindow::hitTest(EMouseMsg* m) {
+		if (checkSubWindowsHit(m)) {
+			return true;
+		} else {
+			if (m->pos.x >= 0 && m->pos.y >= 0 && m->pos.x < windowWidth && m->pos.y < windowHeight) {
+				m->give(this);
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+			
 
 	void EWindow::preDraw(int, int) {
 		glPushMatrix();
@@ -40,17 +69,23 @@ namespace Eg {
 			(*it)->execDraw(px + (*it)->windowPosx, py - (*it)->windowPosy);
 		}
 	}
+	
+	void EWindow::windowClose(ECloseMsg*) {}
+	void EWindow::windowResize(EResizeMsg*) {}
+	void EWindow::mouseMove(EMouseMoveMsg*) {}
 
 	void EWindow::draw() {}
 
-	void EWindow::move(int x, int y) {
+	EWindow* EWindow::move(int x, int y) {
 		windowPosx = x;
 		windowPosy = y;
+		return this;
 	}
 
-	void EWindow::resize(int w, int h) {
+	EWindow* EWindow::resize(int w, int h) {
 		windowWidth = w;
 		windowHeight = h;
+		return this;
 	}
 
 }

@@ -1,10 +1,19 @@
 #include "EApp.h"
 #include "EUserWindow.h"
+#include "EMsg.h"
 #include <GL/glew.h>
+#include <stdio.h>
 
-class MyMain : public Eg::EUserWindow {
+using namespace Eg;
+
+class MyMain : public EUserWindow {
+protected:
+	virtual void mouseMove(EMouseMoveMsg* m) override {
+		printf("msg: %+04d    %+04d\n", m->pos.x, m->pos.y);
+		fflush(stdout);
+	}
 public:
-	using Eg::EUserWindow::EUserWindow;
+	using EUserWindow::EUserWindow;
 	virtual void draw() {
 		// glClear(GL_COLOR_BUFFER_BIT);
 		static float x;
@@ -25,8 +34,8 @@ public:
 };
 
 int main() {
-	Eg::EApp app([]() {
-		new MyMain(Eg::eRootWindow, 160, 120, 320, 240);
+	EApp app([]() {
+		(new MyMain(eRootWindow))->move(160, 120)->resize(320, 240);
 	});
 	return app.exec();
 }

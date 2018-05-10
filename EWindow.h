@@ -11,26 +11,31 @@ namespace Eg {
 
 	extern class EWindow* eRootWindow;
 
-	class EWindow {
+	class EWindow : public EWindowInterface {
 		friend class EEventLoop;
 		friend class EMainWindow;
 		std::list<EWindow*> subWindows;
 		void execDraw(int px, int py);
-		EWindow(int x, int y, int w, int h);
+		EWindow();
 	protected:
 		EWindow* parentWindow;
 		int windowPosx, windowPosy;
 		int windowWidth, windowHeight;
+		bool checkSubWindowsHit(EMouseMsg* m);
+		virtual bool hitTest(EMouseMsg* m);
 		virtual void preDraw(int px, int py);
 		virtual void pstDraw(int px, int py);
+		virtual void windowClose(ECloseMsg* msg);
+		virtual void windowResize(EResizeMsg* msg);
+		virtual void mouseMove(EMouseMoveMsg* msg);
 	public:
-		EWindow(EWindow* p, int x, int y, int w, int h);
+		EWindow(EWindow* p);
 		virtual ~EWindow() {}
 
 		void post(EMsgBase* msg);
 		virtual void draw();
-		virtual void move(int x, int y);
-		virtual void resize(int w, int h);
+		virtual EWindow* move(int x, int y);
+		virtual EWindow* resize(int w, int h);
 
 
 		EPointi pos() const {
