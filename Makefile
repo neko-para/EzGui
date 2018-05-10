@@ -1,25 +1,18 @@
 FLAG=-std=c++11 -Wall -Wextra -g
-SYS=win
 
-ifeq ($(SYS), win)
-	DLL=libEg.dll
-	EXE=test.exe
-	EXTRALIB=-lglu32 -lopengl32
-else
-	DLL=libEg.so
-	EXE=test
-endif
-
-GLEWLIB:=$(shell pkg-config --cflags --libs glew) $(EXTRALIB)
+GLEWLIB:=$(shell pkg-config --cflags --libs glew)
 GLFWLIB:=$(shell pkg-config --cflags --libs glfw3)
 
-all: $(EXE)
+all: test
 
-$(EXE): test.cpp $(DLL)
+clean:
+	-rm -f test libEg.so
+
+test: test.cpp libEg.so
 	g++ -o $@ $< $(FLAG) -Wl,--rpath=. -L. -lEg $(GLEWLIB)
 
-$(DLL): global.h.gch $(shell ls E*.cpp E*.h)
-	g++ -shared -o $@ $(shell ls E*.cpp) $(FLAG) -fPIC $(GLFWLIB) $(GLEWLIB)
+libEg.so: global.h.gch $(wildcard E*.cpp E*.h)
+	g++ -shared -o $@ $(wildcard E*.cpp) $(FLAG) -fPIC $(GLFWLIB) $(GLEWLIB)
 
 global.h.gch: global.h
 	g++ $< $(FLAG)
