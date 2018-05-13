@@ -10,6 +10,7 @@ namespace Eg {
 		bool curState;
 	protected:
 		virtual void mouseMove(EMouseMoveMsg*);
+		virtual void draw();
 	public:
 		EPushButton(EWindow* p);
 		bool state() const {

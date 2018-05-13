@@ -10,5 +10,9 @@ namespace Eg {
 	void EPushButton::mouseMove(EMouseMoveMsg*) {
 		
 	}
+
+	void EPushButton::draw() {
+		windowPalette.color(EPalette::BUTTON).set();
+	}
 	
 }

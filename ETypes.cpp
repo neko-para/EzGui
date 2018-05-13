@@ -1,3 +1,4 @@
+#include "global.h"
 #include "ETypes.h"
 
 namespace Eg {
@@ -25,6 +26,10 @@ namespace Eg {
 
 	EColor::EColor(EGlobalColor g) {
 		*this = globalColors[g];
+	}
+
+	void EColor::set() const {
+		glColor4d(red, green, blue, alpha);
 	}
 
 }

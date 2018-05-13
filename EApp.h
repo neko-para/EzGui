@@ -20,6 +20,7 @@ namespace Eg {
 		EEventLoop loop;
 		std::thread* coreThread;
 		GLFWwindow* handle;
+		int glMajorVer, glMinorVer;
 
 		EApp(const EApp&);
 		EApp& operator=(const EApp&);
@@ -28,8 +29,16 @@ namespace Eg {
 		Signal<int> s_quit;
 		TransferSlot<int> quit;
 
-		EApp(std::function<void(void)> startUp, int w = 640, int h = 480);
+		EApp(std::function<void(void)> startUp, int w = 640, int h = 480, int majorV = 1, int minorV = 0);
 		~EApp();
+
+		int majorVer() const {
+			return glMajorVer;
+		}
+
+		int minorVer() const {
+			return glMinorVer;
+		}
 
 		int exec();
 

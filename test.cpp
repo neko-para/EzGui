@@ -9,8 +9,8 @@ using namespace Eg;
 class MyMain : public EUserWindow {
 protected:
 	virtual void mouseMove(EMouseMoveMsg* m) override {
-		printf("msg: %+04d    %+04d\n", m->pos.x, m->pos.y);
-		fflush(stdout);
+		// printf("msg: %+04d    %+04d\n", m->pos.x, m->pos.y);
+		// fflush(stdout);
 	}
 public:
 	using EUserWindow::EUserWindow;
@@ -35,6 +35,7 @@ public:
 
 int main() {
 	EApp app([]() {
+		// printf("%d.%d\n", eApp->majorVer(), eApp->minorVer());
 		(new MyMain(eRootWindow))->move(160, 120)->resize(320, 240);
 	});
 	return app.exec();

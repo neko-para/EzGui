@@ -9,9 +9,15 @@ namespace Eg {
 
 		struct Exception : public std::exception {};
 
-		struct AppAlreadyConstruct : public Exception {
+		struct RequiringOpenglVersionTooHigh : public Exception {
 			virtual const char* what() const noexcept {
-				return "EApp: app already construct";
+				return "EApp: require opengl version too high";
+			}
+		};
+
+		struct AppAlreadyConstructed : public Exception {
+			virtual const char* what() const noexcept {
+				return "EApp: app already constructed";
 			}
 		};
 

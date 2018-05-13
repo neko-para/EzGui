@@ -62,6 +62,7 @@ namespace Eg {
 		EColor(int r, int g, int b, int a = 255) : EColor(r / 255.0, g / 255.0, b / 255.0, a / 255.0) {}
 		EColor() : EColor(0, 0, 0) {}
 		EColor(EGlobalColor g);
+		void set() const; // glColor4d
 	};
 
 }
