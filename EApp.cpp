@@ -79,10 +79,12 @@ namespace Eg {
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 				glViewport(0, 0, w, h);
+				glMatrixMode(GL_PROJECTION);
 				glLoadIdentity();
 				gluOrtho2D(0, w, 0, h);
 				glTranslated(0, h, 0);
 				glScaled(1, -1, 1);
+				glMatrixMode(GL_MODELVIEW);
 
 				int px, py;
 				glfwGetWindowPos(handle, &px, &py);

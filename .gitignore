@@ -2,3 +2,5 @@
 libEg.so
 test
 global.h.gch
+DevCpp/libEg.dll
+DevCpp/test.exe

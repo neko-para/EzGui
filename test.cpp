@@ -8,7 +8,7 @@ using namespace Eg;
 
 class MyMain : public EUserWindow {
 protected:
-	virtual void mouseMove(EMouseMoveMsg* m) override {
+	virtual void mouseMove(EMouseMoveMsg*) override {
 		// printf("msg: %+04d    %+04d\n", m->pos.x, m->pos.y);
 		// fflush(stdout);
 	}
