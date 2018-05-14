@@ -14,8 +14,8 @@ namespace Eg {
 	}) {}
 
 	int EEventLoop::exec() {
-//		clock_t base = clock();
-//		unsigned long cnt = 0;
+		clock_t base = clock();
+		unsigned long cnt = 0;
 		while (!end) {
 			std::list<EMsgBase*> msgs;
 			eApp->get(msgs);
@@ -26,11 +26,11 @@ namespace Eg {
 			glClear(GL_COLOR_BUFFER_BIT);
 			eRootWindow->execDraw(0, eRootWindow->windowHeight);
 			glfwSwapBuffers(eApp->getGlfwWindow());
-//			printf("%.4lf\r", (double)cnt++ / (clock() - base) * CLOCKS_PER_SEC);
-//			if (cnt > 10000) {
-//				base = clock();
-//				cnt = 0;
-//			}
+			printf("%.4lf\r", (double)cnt++ / (clock() - base) * CLOCKS_PER_SEC);
+			if (cnt > 10000) {
+				base = clock();
+				cnt = 0;
+			}
 		}
 		return exitCode;
 	}

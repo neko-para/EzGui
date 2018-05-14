@@ -13,9 +13,19 @@ namespace Eg {
 		
 	public:
 		enum DrawMode {
-			
+			Points,
+			Lines,
+			LineLoop,
+			LineStrip,
+			Triangles,
+			TriangleStrip,
+			TriangleFan,
+			Quads,
+			QuadStrip,
+			Polygon
 		};
 		struct PointData : public std::vector<double> {
+			using std::vector<double>::vector;
 			PointData(const std::initializer_list<EPointf> &pts) {
 				for (const auto& p : pts) {
 					push_back(p.x);
@@ -32,6 +42,7 @@ namespace Eg {
 			}
 		};
 		struct ColorData : public std::vector<double> {
+			using std::vector<double>::vector;
 			ColorData(const std::initializer_list<EColor> &cls) {
 				for (const auto& c : cls) {
 					push_back(c.red);
@@ -53,8 +64,10 @@ namespace Eg {
 				pop_back();
 			}
 		};
-		EPainter(EWindow* w);
-		
+		EPainter();
+		void draw(DrawMode mode, const PointData& vertexs, const ColorData& colors);
+		void draw(DrawMode mode, const PointData& vertexs, const PointData& texcoords);
+		void draw(DrawMode mode, const PointData& vertexs, const ColorData& colors, const PointData& texcoords);
 	};
 	
 }
