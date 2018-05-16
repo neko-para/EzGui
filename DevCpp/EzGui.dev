@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000001000000
-UnitCount=24
+UnitCount=25
 
 [VersionInfo]
 Major=1
@@ -282,6 +282,16 @@ BuildCmd=
 
 [Unit24]
 FileName=..\EPainter.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit25]
+FileName=..\EImage.cpp
 CompileCpp=1
 Folder=
 Compile=1

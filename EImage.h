@@ -4,7 +4,12 @@
 namespace Eg {
 
 	class EImage {
-		
+		int width, height;
+		unsigned tex;
+	public:
+		EImage();
+		bool load(const char* name);
+		void bind();
 	};
 	
 }
