@@ -52,7 +52,7 @@ namespace Eg {
 		eApp->put(new EMouseMoveMsg(x, y));
 	}
 
-	EApp::EApp(std::function<void(void)> startUp, int w, int h, int majorV, int minorV) : end(false), close([&]() {
+	EApp::EApp(std::function<void(void)> startUp, int w, int h) : end(false), close([&]() {
 		end = true;
 	}), quit(s_quit) {
 		if (eApp) {
@@ -65,15 +65,11 @@ namespace Eg {
 			glfwSetWindowCloseCallback(handle, CloseCallback);
 			glfwSetWindowSizeCallback(handle, ResizeCallback);
 			glfwSetCursorPosCallback(handle, CursorPosCallback);
-			coreThread = new std::thread([&](std::function<void(void)> startUp, int w, int h, int majorV, int minorV) {
+			coreThread = new std::thread([&](std::function<void(void)> startUp, int w, int h) {
 				glfwMakeContextCurrent(handle);
 				glfwSwapInterval(0);
 				glewInit();
-				glGetIntegerv(GL_MAJOR_VERSION, &glMajorVer);
-				glGetIntegerv(GL_MINOR_VERSION, &glMinorVer);
-				if (glMajorVer < majorV || (glMajorVer == majorV && glMinorVer < minorV)) {
-					throw Exceptions::RequiringOpenglVersionTooHigh();
-				}
+
 				glEnable(GL_SCISSOR_TEST);
 				glEnable(GL_BLEND);
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -93,7 +89,7 @@ namespace Eg {
 				startUp();
 				loop.exec();
 				close();
-			}, startUp, w, h, majorV, minorV);
+			}, startUp, w, h);
 		}
 	}
 
