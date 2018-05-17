@@ -1,5 +1,6 @@
 #include "global.h"
 #include "EPainter.h"
+#include <assert.h>
 
 namespace Eg {
 	
@@ -19,12 +20,19 @@ namespace Eg {
 
 	void EPainter::draw(DrawMode mode, const PointData& vertexs, const PointData& texcoords) {
 		glEnableClientState(GL_VERTEX_ARRAY);
+		assert(glGetError());
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		assert(glGetError());
 		glVertexPointer(2, GL_DOUBLE, 0, vertexs.data());
+		assert(glGetError());
 		glTexCoordPointer(2, GL_DOUBLE, 0, texcoords.data());
+		assert(glGetError());
 		glDrawArrays(mode, 0, vertexs.size() / 2);
+		assert(glGetError());
 		glDisableClientState(GL_VERTEX_ARRAY);
+		assert(glGetError());
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		assert(glGetError());
 	}
 
 	void EPainter::draw(DrawMode mode, const PointData& vertexs, const ColorData& colors, const PointData& texcoords) {

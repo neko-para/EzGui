@@ -1,9 +1,11 @@
 #include "EApp.h"
 #include "EUserWindow.h"
 #include "EMsg.h"
+#include "EImage.h"
 #include <GL/glew.h>
 #include "EPainter.h"
 #include <stdio.h>
+#include <assert.h>
 
 using namespace Eg;
 
@@ -15,41 +17,33 @@ protected:
 	}
 
 	EPainter::PointData vertexs;
-	EPainter::ColorData colors;
+	EPainter::PointData texcoords;
+	EImage texture;
 public:
 	MyMain(EWindow* p) : EUserWindow(p), vertexs({
-			-8.6, 5,
-			0, -10,
-			8.6, 5
-		}), colors({
-			1.0, 0.0, 0.0, 1.0,
-			0.0, 1.0, 0.0, 1.0,
-			0.0, 0.0, 1.0, 1.0,
-		}) {}
+			10, 10,
+			10, 42,
+			42, 42,
+			42, 10,
+		}), texcoords({
+			0, 0,
+			0, 1,
+			1, 1,
+			1, 0,
+		}) {
+		assert(texture.load("../commandblock.png"));
+	}
 	virtual void draw() {
-		// glClear(GL_COLOR_BUFFER_BIT);
-		static float x;
-		glPushMatrix();
-		glRotated(x, 0, 0, 1);
-		glScaled(5, 5, 1);
-		x += 0.1;
 		EPainter painter;
-		painter.draw(EPainter::Triangles, vertexs, colors);
-		// glBegin(GL_TRIANGLES);
-		// glColor3d(1, 0, 0);
-		// glVertex2d(-8.6, 5);
-		// glColor3d(0, 1, 0);
-		// glVertex2d(0, -10);
-		// glColor3d(0, 0, 1);
-		// glVertex2d(8.6, 5);
-		// glEnd();
-		glPopMatrix();
+		texture.bind();
+		painter.draw(EPainter::Quads, vertexs, texcoords);
+		assert(0);
 	}
 };
 
 int main() {
 	EApp app([]() {
-		// printf("%d.%d\n", eApp->majorVer(), eApp->minorVer());
+		glEnable(GL_TEXTURE);
 		(new MyMain(eRootWindow))->move(160, 120)->resize(320, 240);
 	});
 	return app.exec();

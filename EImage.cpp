@@ -4,7 +4,7 @@
 namespace Eg {
 	
 	EImage::EImage() {
-		width = height = 0;
+		imageWidth = imageHeight = 0;
 		tex = 0;
 	}
 
@@ -27,9 +27,9 @@ namespace Eg {
 			FreeImage_Unload(fib);
 			return false;
 		}
-		width = FreeImage_GetWidth(fib);
-		height = FreeImage_GetHeight(fib);
-		for (i = 0; i < width * height; ++i) {
+		imageWidth = FreeImage_GetWidth(fib);
+		imageHeight = FreeImage_GetHeight(fib);
+		for (i = 0; i < imageWidth * imageHeight; ++i) {
 			GLubyte temp = data[i << 2];
 			data[i << 2] = data[(i << 2) | 2];
 			data[(i << 2) | 2] = temp;
@@ -40,7 +40,7 @@ namespace Eg {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		FreeImage_Unload(fib);
 		return true;
 	}

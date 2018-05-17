@@ -4,12 +4,18 @@
 namespace Eg {
 
 	class EImage {
-		int width, height;
+		int imageWidth, imageHeight;
 		unsigned tex;
 	public:
 		EImage();
 		bool load(const char* name);
 		void bind();
+		int width() const {
+			return imageWidth;
+		}
+		int height() const {
+			return imageHeight;
+		}
 	};
 	
 }
